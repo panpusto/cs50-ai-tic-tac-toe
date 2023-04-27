@@ -2,7 +2,7 @@
 Tic Tac Toe Player
 """
 import copy
-import math
+import itertools
 
 X = "X"
 O = "O"
@@ -25,12 +25,11 @@ def player(board):
     x_player_counter = 0
     o_player_counter = 0
 
-    for i in range(0, len(board)):
-        for j in range(0, len(board[0])):
-            if board[i][j] == 'X':
-                x_player_counter += 1
-            elif board[i][j] == 'O':
-                o_player_counter += 1
+    for i, j in itertools.product(range(len(board)), range(len(board[0]))):
+        if board[i][j] == 'X':
+            x_player_counter += 1
+        elif board[i][j] == 'O':
+            o_player_counter += 1
 
     if x_player_counter > o_player_counter:
         return O
@@ -43,10 +42,9 @@ def actions(board):
     """
     possible_actions = set()
 
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if board[i][j] == EMPTY:
-                possible_actions.add((i, j))
+    for i, j in itertools.product(range(len(board)), range(len(board[0]))):
+        if board[i][j] == EMPTY:
+            possible_actions.add((i, j))
 
     return possible_actions
 
@@ -109,7 +107,7 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    if winner(board) is not None or (not None in board[0] and not None in board[1] and not None in board[2]):
+    if winner(board) is not None or not any(None in row for row in board):
         return True
 
     return False
@@ -144,6 +142,9 @@ def minimax(board):
 
 
 def min_value(board, alpha, beta):
+    """
+    Returns optimal move for the player trying to minimize the score of the opponent.
+    """
     if terminal(board):
         return utility(board), None
 
@@ -163,6 +164,9 @@ def min_value(board, alpha, beta):
 
 
 def max_value(board, alpha, beta):
+    """
+    Returns optimal move for the player trying to maximize the score of the opponent.
+    """
     if terminal(board):
         return utility(board), None
 
