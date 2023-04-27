@@ -43,8 +43,8 @@ def actions(board):
     """
     possible_actions = set()
 
-    for i in range(0, len(board)):
-        for j in range(0, len(board[0])):
+    for i in range(len(board)):
+        for j in range(len(board[0])):
             if board[i][j] == EMPTY:
                 possible_actions.add((i, j))
 
@@ -132,4 +132,50 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+    else:
+        if player(board) == X:
+            value, move = max_value(board, float('-inf'), float('inf'))
+            return move
+        else:
+            value, move = min_value(board, float('-inf'), float('inf'))
+            return move
+
+
+def min_value(board, alpha, beta):
+    if terminal(board):
+        return utility(board), None
+
+    perfect_move = tuple()
+    v = float('inf')
+    for action in actions(board):
+        val, act = max_value(result(board, action), alpha, beta)
+        if val < v:
+            v = val
+            perfect_move = action
+
+        beta = min(beta, v)
+        if beta <= alpha:
+            break
+
+    return v, perfect_move
+
+
+def max_value(board, alpha, beta):
+    if terminal(board):
+        return utility(board), None
+
+    perfect_move = tuple()
+    v = float('-inf')
+    for action in actions(board):
+        val, act = min_value(result(board, action), alpha, beta)
+        if val > v:
+            v = val
+            perfect_move = action
+
+        alpha = max(alpha, v)
+        if beta <= alpha:
+            break
+
+    return v, perfect_move
