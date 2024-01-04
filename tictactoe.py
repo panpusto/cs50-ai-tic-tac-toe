@@ -67,7 +67,7 @@ def winner(board):
     Returns the winner of the game, if there is one.
     """
     for i in range(len(board)):
-        if board[i][0] == board[i][1] == board[i][2]:
+        if board[i][0] == board[i][1] == board[i][2] and board[i][0] is not None:
             if board[i][0] == 'X':
                 return X
             elif board[i][0] == 'O':
@@ -76,7 +76,7 @@ def winner(board):
                 return None
 
     for i in range(len(board)):
-        if board[0][i] == board[1][i] == board[2][i]:
+        if board[0][i] == board[1][i] == board[2][i] and board[0][i] is not None:
             if board[0][i] == 'X':
                 return X
             elif board[0][i] == 'O':
@@ -84,7 +84,7 @@ def winner(board):
             else:
                 return None
 
-    if board[0][0] == board[1][1] == board[2][2]:
+    if board[0][0] == board[1][1] == board[2][2] and board[0][0] is not None:
         if board[0][0] == 'X':
             return X
         elif board[0][0] == 'O':
@@ -92,7 +92,7 @@ def winner(board):
         else:
             return None
 
-    if board[0][2] == board[1][1] == board[2][0]:
+    if board[0][2] == board[1][1] == board[2][0] and board[0][2] is not None:
         if board[0][2] == 'X':
             return X
         elif board[0][2] == 'O':
